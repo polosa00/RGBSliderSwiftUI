@@ -25,16 +25,32 @@ struct ContentView: View {
                     greenValue: $greenSliderValue,
                     blueValue: $blueSliderValue
                 )
-            
-                ColorSliderView(value: $redSliderValue, tintColor: .red)
-                ColorSliderView(value: $greenSliderValue, tintColor: .green)
-                ColorSliderView(value: $blueSliderValue, tintColor: .blue)
                 
+                VStack {
+                    ColorSliderView(value: $redSliderValue, tintColor: .red)
+                    ColorSliderView(value: $greenSliderValue, tintColor: .green)
+                    ColorSliderView(value: $blueSliderValue, tintColor: .blue)
+                }
+                .toolbar {
+                    ToolbarItem(placement: .keyboard) {
+                        Button("Done") {
+                            UIApplication.shared.endEditing()
+                        }
+                      
+                    }
+                }
+                    
                 Spacer()
-    
             }
             .padding(EdgeInsets(top: 20, leading: 20, bottom: 0, trailing: 20))
+            
+        }.onTapGesture {
+            endEditing()
         }
+    }
+    
+    private func endEditing() {
+        UIApplication.shared.endEditing()
     }
 }
 
@@ -47,6 +63,7 @@ struct ContentView_Previews: PreviewProvider {
 struct ColorSliderView: View {
     
     @Binding var value: Double
+    
     let tintColor: Color
     
     var body: some View {
@@ -54,19 +71,16 @@ struct ColorSliderView: View {
             Text("0").foregroundColor(.white)
             Slider(value: $value, in: 0...255, step: 1)
                 .tint(tintColor)
+                .animation(.default)
             Text("255").foregroundColor(.white)
             TextField("Red", value: $value, formatter: NumberFormatter())
+                .textFieldStyle(.roundedBorder)
                 .frame(width: 55.0,height: 30)
                 .multilineTextAlignment(.center)
                 .background(Color.white)
-                .cornerRadius(4)
                 .keyboardType(.numberPad)
         }
-        .keyboardType(.numberPad)
-       
     }
-    
-    
 }
 
 struct MainView: View {
@@ -82,3 +96,30 @@ struct MainView: View {
             .overlay(RoundedRectangle(cornerRadius: 15).stroke(Color.white, lineWidth: 4))
     }
 }
+
+extension UIApplication {
+    func endEditing() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+//
+//struct DoneButtonInKeyboardModifier: ViewModifier {
+//    func body(content: Content) -> some View {
+//        content
+//            .toolbar {
+//                ToolbarItem(placement: .keyboard) {
+//                    Button("Done") {
+//                        UIApplication.shared.endEditing()
+//                    }
+//                }
+//            }
+//    }
+//
+//
+//}
+//
+//extension TextField {
+//    func doneTapped() -> some View {
+//        modifier(DoneButtonInKeyboardModifier())
+//    }
+//}
