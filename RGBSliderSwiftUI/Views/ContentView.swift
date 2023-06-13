@@ -26,20 +26,17 @@ struct ContentView: View {
                     blueValue: $blueSliderValue
                 )
                 
-                VStack {
-                    ColorSliderView(value: $redSliderValue, tintColor: .red)
-                    ColorSliderView(value: $greenSliderValue, tintColor: .green)
-                    ColorSliderView(value: $blueSliderValue, tintColor: .blue)
-                }
-                .toolbar {
-                    ToolbarItem(placement: .keyboard) {
-                        Button("Done") {
-                            UIApplication.shared.endEditing()
+                ColorSliderView(value: $redSliderValue, tintColor: .red)
+                ColorSliderView(value: $greenSliderValue, tintColor: .green)
+                ColorSliderView(value: $blueSliderValue, tintColor: .blue)
+                    .toolbar {
+                        ToolbarItem(placement: .keyboard) {
+//                            Spacer()
+                            Button("Done") {
+                                UIApplication.shared.endEditing()
+                            }
                         }
-                      
                     }
-                }
-                    
                 Spacer()
             }
             .padding(EdgeInsets(top: 20, leading: 20, bottom: 0, trailing: 20))
@@ -102,24 +99,4 @@ extension UIApplication {
         sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
-//
-//struct DoneButtonInKeyboardModifier: ViewModifier {
-//    func body(content: Content) -> some View {
-//        content
-//            .toolbar {
-//                ToolbarItem(placement: .keyboard) {
-//                    Button("Done") {
-//                        UIApplication.shared.endEditing()
-//                    }
-//                }
-//            }
-//    }
-//
-//
-//}
-//
-//extension TextField {
-//    func doneTapped() -> some View {
-//        modifier(DoneButtonInKeyboardModifier())
-//    }
-//}
+
